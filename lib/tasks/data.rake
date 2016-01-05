@@ -29,7 +29,12 @@ namespace :data do
     end
 
     CSV.foreach('data/transactions.csv', headers: true) do |row|
-      Transaction.create(row.to_h)
+      Transaction.create({  invoice_id: row["invoice_id"],
+                            credit_card_number: row["credit_card_number"],
+                            result: row["result"],
+                            created_at: row["created_at"],
+                            updated_at: row["updated_at"]
+                        })
       puts "Imported transaction #{row.to_h["id"]}"
     end
   end

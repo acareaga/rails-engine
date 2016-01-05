@@ -21,7 +21,7 @@ class Api::V1::CustomersController < ApplicationController
     if params["first_name"] || params["last_name"]
       respond_with Customer.where("#{params.first.first} ILIKE ?", params.first.last)
     else
-      respond_with Customer.find_by(customer_params)
+      # respond_with Customer.find_by(customer_params)
       respond_with Customer.where("#{params.first.first}": params.first.last)
     end
   end

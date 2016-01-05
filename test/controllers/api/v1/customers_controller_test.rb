@@ -74,7 +74,6 @@ class Api::V1::CustomersControllerTest < ActionController::TestCase
   end
 
   test '#invoices responds to json' do
-    skip
     get :invoices, format: :json, id: Customer.last.id
     assert_response :success
   end
@@ -88,7 +87,6 @@ class Api::V1::CustomersControllerTest < ActionController::TestCase
   ############## TRANSACTIONS
 
   test '#transactions responds to json' do
-    skip
     get :transactions, format: :json, id: Customer.last.id
     assert_response :success
   end
