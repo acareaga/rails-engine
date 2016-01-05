@@ -11,4 +11,14 @@ class Api::V1::MerchantsControllerTest < ActionController::TestCase
     get :show, format: :json, id: 1
     assert_response :success
   end
+
+  test '#find returns a merchant by specific case-insensitive name' do
+    get :find, format: :json, name: "kOzEy gRoUpT"
+    assert_response :success
+  end
+
+  test '#find returns a merchant by specific id' do
+    get :find, format: :json, id: 12
+    assert_response :success
+  end
 end
