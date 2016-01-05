@@ -10,7 +10,7 @@ class Api::V1::TransactionsController < ApplicationController
   end
 
   def find
-    if params["name"] || params["result"]
+    if params["credit_card_number"] || params["result"]
       respond_with Transaction.where("#{params.first.first} ILIKE ?", params.first.last).first
     else
       respond_with Transaction.where("#{params.first.first}": params.first.last).first
@@ -18,7 +18,7 @@ class Api::V1::TransactionsController < ApplicationController
   end
 
   def find_all
-    if params["name"] || params["result"]
+    if params["credit_card_number"] || params["result"]
       respond_with Transaction.where("#{params.first.first} ILIKE ?", params.first.last)
     else
       respond_with Transaction.where("#{params.first.first}": params.first.last)
