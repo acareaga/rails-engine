@@ -79,8 +79,7 @@ class Api::V1::CustomersControllerTest < ActionController::TestCase
   end
 
   test '#invoices returns specific customer records' do
-    skip
-    get invoices_api_v1_customer_path, format: :json, id: Customer.first.id
+    get :invoices, format: :json, id: Customer.first.id
     assert_equal 2, json_response.count
   end
 
