@@ -7,6 +7,12 @@ Rails.application.routes.draw do
           get 'find'
           get 'find_all'
           get 'random'
+          get 'items'
+        end
+
+        member do
+          get 'items'
+          get 'invoices'
         end
       end
 

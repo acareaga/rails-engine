@@ -28,4 +28,12 @@ class Api::V1::MerchantsController < ApplicationController
   def random
     respond_with Merchant.random
   end
+
+  def items
+    respond_with Merchant.find_by(id: params[:id]).items
+  end
+
+  def invoices
+    respond_with Merchant.find_by(id: params[:id]).invoices
+  end
 end
