@@ -68,15 +68,34 @@ class Api::V1::CustomersControllerTest < ActionController::TestCase
 
   ##### WHAT ABOUT RANDOM??
 
+  test '#random responds to json' do
+    get :random, format: :json
+    assert_response :success
+  end
+
   test '#invoices responds to json' do
+    skip
     get :invoices, format: :json, id: Customer.last.id
     assert_response :success
   end
 
-  test '#invoices returns a specific customers records' do
-    get :invoices, format: :json, id: Customer.first.id
-    binding.pry
-    assert_equal 1, json_response.count
+  test '#invoices returns specific customer records' do
+    skip
+    get invoices_api_v1_customer_path, format: :json, id: Customer.first.id
+    assert_equal 2, json_response.count
   end
 
+  ############## TRANSACTIONS
+
+  test '#transactions responds to json' do
+    skip
+    get :transactions, format: :json, id: Customer.last.id
+    assert_response :success
+  end
+
+  test '#transactions returns specific customer records' do
+    skip
+    get :transactions, format: :json, id: Customer.first.id
+    assert_equal 1, json_response.count
+  end
 end
