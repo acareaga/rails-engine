@@ -1,4 +1,5 @@
 class Item < ActiveRecord::Base
+  default_scope -> { order('id DESC') }
   belongs_to :merchant
   belongs_to :invoice
   has_many :invoice_items
