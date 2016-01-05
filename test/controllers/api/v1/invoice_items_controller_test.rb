@@ -61,30 +61,4 @@ class Api::V1::InvoiceItemsControllerTest < ActionController::TestCase
     get :random, format: :json
     assert_response :success
   end
-
-  ########### INVOICES
-
-  test '#invoice responds to json' do
-    get :invoice, format: :json, id: InvoiceItem.last.id
-    assert_response :success
-  end
-
-  test '#invoice returns specific customer records' do
-    skip
-    get :invoice, format: :json, id: InvoiceItem.first.id
-    assert_equal 2, json_response.count
-  end
-
-  ############## ITEM
-
-  test '#item responds to json' do
-    get :item, format: :json, id: InvoiceItem.last.id
-    assert_response :success
-  end
-
-  test '#item returns specific customer records' do
-    skip
-    get :item, format: :json, id: InvoiceItem.first.id
-    assert_equal 1, json_response.count
-  end
 end
