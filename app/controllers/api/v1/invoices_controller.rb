@@ -8,4 +8,20 @@ class Api::V1::InvoicesController < ApplicationController
   def show
     respond_with Invoice.find_by(id: params[:id])
   end
+
+  def find
+    if params["status"]
+      respond_with Invoice.where("#{params.first.first} ILIKE ?", params.first.last).first
+    else
+      respond_with Invoice.where("#{params.first.first}": params.first.last).first
+    end
+  end
+
+  def find_all
+    if params["status"]
+      respond_with Invoice.where("#{params.first.first} ILIKE ?", params.first.last)
+    else
+      respond_with Invoice.where("#{params.first.first}": params.first.last)
+    end
+  end
 end
