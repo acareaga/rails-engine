@@ -72,6 +72,10 @@ Rails.application.routes.draw do
           get 'find_all'
           get 'random'
         end
+
+        member do
+          get 'invoice'
+        end
       end
 
     end
