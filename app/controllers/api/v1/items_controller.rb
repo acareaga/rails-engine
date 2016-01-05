@@ -10,7 +10,7 @@ class Api::V1::ItemsController < ApplicationController
   end
 
   def find
-    if params["credit_card_number"] || params["description"]
+    if params["name"] || params["description"]
       respond_with Item.where("#{params.first.first} ILIKE ?", params.first.last).first
     else
       respond_with Item.where("#{params.first.first}": params.first.last).first
@@ -18,7 +18,7 @@ class Api::V1::ItemsController < ApplicationController
   end
 
   def find_all
-    if params["credit_card_number"] || params["description"]
+    if params["name"] || params["description"]
       respond_with Item.where("#{params.first.first} ILIKE ?", params.first.last)
     else
       respond_with Item.where("#{params.first.first}": params.first.last)
