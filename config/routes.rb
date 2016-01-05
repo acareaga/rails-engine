@@ -2,12 +2,42 @@ Rails.application.routes.draw do
 
   namespace :api do
     namespace :v1 do
-        resources :merchants,     only: [:index, :show, :find], defaults: { format: :json }
-        resources :customers,     only: [:index, :show, :find], defaults: { format: :json }
-        resources :items,         only: [:index, :show, :find], defaults: { format: :json }
-        resources :invoices,      only: [:index, :show, :find], defaults: { format: :json }
-        resources :invoice_items, only: [:index, :show, :find], defaults: { format: :json }
-        resources :transactions,  only: [:index, :show, :find], defaults: { format: :json }
+      resources :merchants, except: [:new, :edit], defaults: { format: :json } do
+        collection do
+          get 'find'
+        end
+      end
+
+      resources :customers, except: [:new, :edit], defaults: { format: :json } do
+        collection do
+          get 'find'
+        end
+      end
+
+      resources :items, except: [:new, :edit], defaults: { format: :json } do
+        collection do
+          get 'find'
+        end
+      end
+
+      resources :invoices, except: [:new, :edit], defaults: { format: :json } do
+        collection do
+          get 'find'
+        end
+      end
+
+      resources :invoice_items, except: [:new, :edit], defaults: { format: :json } do
+        collection do
+          get 'find'
+        end
+      end
+
+      resources :transactions, except: [:new, :edit], defaults: { format: :json } do
+        collection do
+          get 'find'
+        end
+      end
+
     end
   end
 end
