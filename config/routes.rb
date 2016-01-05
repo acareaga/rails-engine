@@ -30,6 +30,11 @@ Rails.application.routes.draw do
           get 'find_all'
           get 'random'
         end
+
+        member do
+          get 'invoice_items'
+          get 'merchant'
+        end
       end
 
       resources :invoices, except: [:new, :edit], defaults: { format: :json } do
