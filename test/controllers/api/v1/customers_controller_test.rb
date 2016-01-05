@@ -16,8 +16,8 @@ class Api::V1::CustomersControllerTest < ActionController::TestCase
     assert_response :success
   end
 
-  test '#find returns a customer by specific case-insensitive first name' do
-    get :find, format: :json, last_name: "sHaWn"
+  test '#find returns a customer by specific case-insensitive last name' do
+    get :find, format: :json, last_name: "lAnGwOrTh"
     assert_response :success
   end
 
@@ -25,4 +25,9 @@ class Api::V1::CustomersControllerTest < ActionController::TestCase
   #   get :find, format: :json, 'id': 54
   #   assert_response :success
   # end
+
+  test '#random returns a random customer' do
+    get :random, format: :json
+    assert_response :success
+  end
 end
