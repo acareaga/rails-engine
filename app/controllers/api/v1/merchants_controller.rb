@@ -13,7 +13,7 @@ class Api::V1::MerchantsController < ApplicationController
     if params["name"]
       respond_with Merchant.where("#{params.first.first} ILIKE ?", params.first.last).first
     else
-      respond_with Merchant.where("#{params.first.first}": params.first.last).first
+      respond_with Merchant.find_by(params.first.first => params.first.last)
     end
   end
 
@@ -35,5 +35,10 @@ class Api::V1::MerchantsController < ApplicationController
 
   def invoices
     respond_with Merchant.find_by(id: params[:id]).invoices
+  end
+
+  def most_revenue
+    Merchant.all
+    # respond_with Merchant.all.joins(invoices: :invoice_items).group("merchants.id").sum("invoice_items.quantity * invoice_items.unit_price")
   end
 end

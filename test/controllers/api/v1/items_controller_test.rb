@@ -3,61 +3,73 @@ require 'test_helper'
 class Api::V1::ItemsControllerTest < ActionController::TestCase
 
   test '#index responds to json' do
+    create(:item)
     get :index, format: :json
     assert_response :success
   end
 
   test '#index returns an array of records' do
+    create(:item)
     get :index, format: :json
     assert_kind_of Array, json_response
   end
 
   test '#index returns the correct number of items' do
+    items = create_list(:item, 5)
     get :index, format: :json
-    assert_equal Item.count, json_response.count
+    assert_equal items.count, json_response.count
   end
 
   test '#show responds to json' do
-    get :show, format: :json, id: Item.last.id
+    item = create(:item)
+    get :show, format: :json, id: item.id
     assert_response :success
   end
 
   test '#show returns a single record' do
-    get :show, format: :json, id: Item.last.id
+    item = create(:item)
+    get :show, format: :json, id: item.id
     assert_kind_of Hash, json_response
   end
 
   test '#show returns the correct item' do
-    get :show, format: :json, id: Item.last.id
-    assert_equal Item.last.id, json_response["id"]
+    item = create(:item)
+    get :show, format: :json, id: item.id
+    assert_equal item.id, json_response["id"]
   end
 
   test '#find responds to json' do
-    get :find, format: :json, id: Item.last.id
+    item = create(:item)
+    get :find, format: :json, id: item.id
     assert_response :success
   end
 
   test '#find returns a single record' do
-    get :find, format: :json, id: Item.last.id
+    item = create(:item)
+    get :find, format: :json, id: item.id
     assert_kind_of Hash, json_response
   end
 
   test '#find returns the correct item' do
-    get :find, format: :json, id: Item.first.id
-    assert_equal Item.first.id, json_response["id"]
+    item = create(:item)
+    get :find, format: :json, id: item.id
+    assert_equal item.id, json_response["id"]
   end
 
   test '#find_all responds to json' do
-    get :find_all, format: :json, id: Item.last.id
+    item = create(:item)
+    get :find_all, format: :json, id: item.id
     assert_response :success
   end
 
   test '#find_all returns all matching records' do
-    get :find_all, format: :json, id: Item.first.id
+    item = create(:item)
+    get :find_all, format: :json, id: item.id
     assert_equal 1, json_response.count
   end
 
   test '#random responds to json' do
+    create(:item)
     get :random, format: :json
     assert_response :success
   end

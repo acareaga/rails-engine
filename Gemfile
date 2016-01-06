@@ -16,6 +16,7 @@ group :development, :test do
   gem 'byebug'
   gem 'pry'
   gem 'minitest'
+  gem 'factory_girl_rails'
 end
 
 group :development do

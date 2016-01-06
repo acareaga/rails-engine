@@ -7,7 +7,8 @@ require 'simplecov'
 SimpleCov.start "rails"
 
 class ActiveSupport::TestCase
-  fixtures :all
+  #  self.use_transactional_fixtures = true
+   include FactoryGirl::Syntax::Methods
 end
 
 class ActionController::TestCase

@@ -13,7 +13,7 @@ class Api::V1::ItemsController < ApplicationController
     if params["name"] || params["description"]
       respond_with Item.where("#{params.first.first} ILIKE ?", params.first.last).first
     else
-      respond_with Item.where("#{params.first.first}": params.first.last).first
+      respond_with Item.find_by(params.first.first => params.first.last)
     end
   end
 

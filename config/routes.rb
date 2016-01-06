@@ -8,6 +8,7 @@ Rails.application.routes.draw do
           get 'find_all'
           get 'random'
           get 'items'
+          get 'most_revenue'
         end
 
         member do

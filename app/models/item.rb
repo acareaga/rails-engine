@@ -1,5 +1,5 @@
 class Item < ActiveRecord::Base
-  default_scope -> { order('id DESC') }
+  default_scope -> { order(id: :desc) }
   belongs_to :merchant
   belongs_to :invoice
   has_many :invoice_items
@@ -11,7 +11,7 @@ class Item < ActiveRecord::Base
 
   private
 
-  def self.format_currency
+  def format_currency
     self.unit_price = unit_price/100.00
   end
 end
