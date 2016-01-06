@@ -80,10 +80,25 @@ class Api::V1::InvoicesControllerTest < ActionController::TestCase
     assert_response :success
   end
 
+  test '#transactions returns the correct for an invoice' do
+    invoice = create(:invoice)
+    create(:transaction, invoice: invoice)
+    get :transactions, format: :json, id: invoice.id
+    assert_equal invoice.id, json_response.first["invoice_id"]
+  end
+
   test '#invoice_items responds to json' do
     invoice = create(:invoice)
     get :invoice_items, format: :json, id: invoice.id
     assert_response :success
+  end
+
+  test '#invoice_items returns the correct data based on an invoice' do
+    invoice = create(:invoice)
+    item = create(:item)
+    invoice_item = create(:invoice_item, item: item, invoice: invoice)
+    get :invoice_items, format: :json, id: invoice.id
+    assert_equal invoice.id, json_response.first["invoice_id"]
   end
 
   test '#items responds to json' do
@@ -92,15 +107,37 @@ class Api::V1::InvoicesControllerTest < ActionController::TestCase
     assert_response :success
   end
 
+  test '#items returns the correct records based on an invoice' do
+    invoice = create(:invoice)
+    item = create(:item)
+    invoice_item = create(:invoice_item, item: item, invoice: invoice)
+    get :items, format: :json, id: invoice.id
+    assert_equal item.id, json_response.first["id"]
+  end
+
   test '#customer responds to json' do
     invoice = create(:invoice)
     get :customer, format: :json, id: invoice.id
     assert_response :success
   end
 
+  test '#customer returns the correct record based on invoice' do
+    customer = create(:customer)
+    invoice = create(:invoice, customer: customer)
+    get :customer, format: :json, id: invoice.id
+    assert_equal customer.id, json_response["id"]
+  end
+
   test '#merchant responds to json' do
     invoice = create(:invoice)
     get :merchant, format: :json, id: invoice.id
     assert_response :success
+  end
+
+  test '#merchant returns the correct record based on invoice' do
+    merchant = create(:merchant)
+    invoice = create(:invoice, merchant: merchant)
+    get :merchant, format: :json, id: invoice.id
+    assert_equal merchant.id, json_response["id"]
   end
 end

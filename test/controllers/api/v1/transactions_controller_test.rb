@@ -79,4 +79,11 @@ class Api::V1::TransactionsControllerTest < ActionController::TestCase
     get :invoice, format: :json, id: transaction.id
     assert_response :success
   end
+
+  test '#invoice returns the correct data based on a transaction' do
+    invoice = create(:invoice)
+    transaction = create(:transaction, invoice: invoice)
+    get :invoice, format: :json, id: transaction.id
+    assert_equal invoice.id, json_response["id"]
+  end
 end

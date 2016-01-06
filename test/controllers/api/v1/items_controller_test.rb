@@ -80,9 +80,23 @@ class Api::V1::ItemsControllerTest < ActionController::TestCase
     assert_response :success
   end
 
+  test '#invoice_items returns the relevant data based on an item' do
+    item = create(:item)
+    invoice_item = create(:invoice_item, item: item)
+    get :invoice_items, format: :json, id: item.id
+    assert_equal item.id, json_response.first["item_id"]
+  end
+
   test '#merchant responds to json' do
     item = create(:item)
     get :merchant, format: :json, id: item.id
     assert_response :success
+  end
+
+  test '#merchant returns the correct record basedon on an item' do
+    merchant = create(:merchant)
+    item = create(:item, merchant: merchant)
+    get :merchant, format: :json, id: item.id
+    assert_equal item.merchant_id, json_response["id"]
   end
 end
