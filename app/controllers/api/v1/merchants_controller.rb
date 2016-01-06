@@ -52,6 +52,17 @@ class Api::V1::MerchantsController < ApplicationController
     revenue = InvoiceItem.where(invoice_id: paid_invoice_ids).sum("unit_price * quantity")
     respond_with({"revenue" => revenue })
   end
+
+  ########## START HERE
+
+  def favorite_customer
+    invoice_ids = Merchant.find(params[:id]).invoices.pluck(:id)
+    paid_invoice_ids = Transaction.where(invoice_id: invoice_ids).where(result: "success").pluck(:invoice_id)
+    customer_ids = Invoice.find(paid_invoice_ids).map { |invoice| invoice.customer_id }
+    sales = customer_ids.inject(Hash.new(0)) { |h,v| h[v] += 1; h }
+    top_customer = customer_ids.max_by { |v| sales[v] }
+    respond_with Customer.find(top_customer)
+  end
 end
 
 # respond_with Invoice.where(merchant_id: params[:id]).joins(:invoice_items).sum("invoice_items.quantity * invoice_items.unit_price")
