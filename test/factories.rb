@@ -18,13 +18,13 @@ FactoryGirl.define do
   factory :transaction do
     invoice
     credit_card_number "123123121123123123"
-    result "Success"
+    result "success"
   end
 
   factory :invoice do
     customer
     merchant
-    status "Success"
+    status "shipped"
   end
 
   factory :invoice_item do

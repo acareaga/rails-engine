@@ -38,10 +38,16 @@ class Api::V1::CustomersController < ApplicationController
   end
 
   def favorite_merchant
-    # invoices.successful. #grouping by merchant_id
-
-    # Merchant.find_by_sql("Select * from invoices WHERE customers.id = customer")
-
-    respond_with Merchant.joins(:invoices).where(invoices: { customer: customer, status: "success" }).group(:id).group("invoice_count desc")
+    invoice_ids = Customer.find(params[:id]).transactions.where(result: "success").pluck(:invoice_id)
+    merchant_ids = Invoice.find(invoice_ids).map { |invoice| invoice.merchant_id }
+    sales = merchant_ids.inject(Hash.new(0)) { |h,v| h[v] += 1; h }
+    top_merchant = merchant_ids.max_by { |v| sales[v] }
+    respond_with Merchant.find(top_merchant)
   end
 end
+
+# invoices.successful. #grouping by merchant_id
+# Merchant.find_by_sql("Select * from invoices WHERE customers.id = customer")
+
+# Customer.find_by(id: params[:id]).transactions
+# respond_with Merchant.joins(:invoices).where(invoices: { customer: customer, status: "shipped" }).group(:id).group("invoice_count desc")

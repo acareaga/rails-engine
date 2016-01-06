@@ -105,20 +105,32 @@ class Api::V1::CustomersControllerTest < ActionController::TestCase
   ########### BI LOGIC
 
   test '#favorite_merchant responds to json' do
-    skip
     customer = create(:customer)
-    customer_2 = create(:customer, name: "Edgar")
-    merchant_1 = merchant.create
-    merchant_2 = merchant.create(name: "Slota Chips")
-    merchant_3 = merchant.create(name: "Jhun's Beats")
-    merchant_1.invoices.create(customer: customer, status: "success")
-    merchant_1.invoices.create(customer: customer, status: "failure")
-    merchant_1.invoices.create(customer: customer, status: "failure")
-    merchant_2.invoices.create(customer: customer, status: "success")
-    merchant_2.invoices.create(customer: customer, status: "success")
-    merchant_2.invoices.create(customer: customer, status: "failure")
-    merchant_3.invoices.create(customer: customer_2, status: "success")
-    merchant_3.invoices.create(customer: customer_2, status: "failure")
+    merchant = create(:merchant)
+    invoice = create(:invoice, customer: customer, merchant: merchant)
+    transaction = create(:transaction, invoice: invoice)
     get :favorite_merchant, format: :json, id: customer.id
+    assert_response :success
+  end
+
+  test '#favorite_merchant returns the top merchant based on a customer data' do
+    customer = create(:customer)
+
+    merchant = create(:merchant)
+    invoice = create(:invoice, customer: customer, merchant: merchant)
+    invoice_2 = create(:invoice, customer: customer, merchant: merchant)
+    invoice_3 = create(:invoice, customer: customer, merchant: merchant)
+    transaction = create(:transaction, invoice: invoice)
+    transaction_2 = create(:transaction, invoice: invoice_2)
+    transaction_3 = create(:transaction, invoice: invoice_3)
+
+    merchant_2 = create(:merchant, name: "Cole")
+    invoice_4 = create(:invoice, customer: customer, merchant: merchant_2)
+    invoice_5 = create(:invoice, customer: customer, merchant: merchant_2)
+    transaction = create(:transaction, invoice: invoice_4)
+    transaction_2 = create(:transaction, invoice: invoice_5)
+
+    get :favorite_merchant, format: :json, id: customer.id
+    assert_equal merchant.id, json_response["id"]
   end
 end
