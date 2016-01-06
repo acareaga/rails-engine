@@ -21,7 +21,6 @@ class Api::V1::CustomersController < ApplicationController
     if params["first_name"] || params["last_name"]
       respond_with Customer.where("#{params.first.first} ILIKE ?", params.first.last)
     else
-      # respond_with Customer.find_by(customer_params)
       respond_with Customer.where("#{params.first.first}": params.first.last)
     end
   end
@@ -36,5 +35,10 @@ class Api::V1::CustomersController < ApplicationController
 
   def transactions
     respond_with Customer.find_by(id: params[:id]).transactions
+  end
+
+  def favorite_merchant
+    binding.pry
+    respond_with Merchant.all.joins(:invoices).where(invoices: { customer: customer, status: "success" }).group(:id).group("invoice_count desc")
   end
 end

@@ -8,10 +8,10 @@ class Api::V1::MerchantsControllerTest < ActionController::TestCase
     assert_response :success
   end
 
-  test '#index returns an array of records' do
-    create(:merchant)
+  test '#index returns an array of merchant records' do
+    create_list(:merchant, 50)
     get :index, format: :json
-    assert_kind_of Array, json_response
+    assert_equal 50, json_response.count
   end
 
   test '#index returns the correct number of merchants' do
@@ -26,7 +26,7 @@ class Api::V1::MerchantsControllerTest < ActionController::TestCase
     assert_response :success
   end
 
-  test '#show returns a single record' do
+  test '#show returns a single merchant record' do
     merchant = create(:merchant)
     get :show, format: :json, id: merchant.id
     assert_kind_of Hash, json_response
@@ -47,6 +47,7 @@ class Api::V1::MerchantsControllerTest < ActionController::TestCase
   test '#find returns a single record' do
     merchant = create(:merchant)
     get :find, format: :json, id: merchant.id
+    assert_equal merchant.id, json_response["id"]
     assert_kind_of Hash, json_response
   end
 
@@ -65,6 +66,7 @@ class Api::V1::MerchantsControllerTest < ActionController::TestCase
   test '#find_all returns all matching records' do
     merchant = create(:merchant)
     get :find_all, format: :json, id: merchant.id
+    assert_equal merchant.id, json_response.first["id"]
     assert_equal 1, json_response.count
   end
 
@@ -80,10 +82,26 @@ class Api::V1::MerchantsControllerTest < ActionController::TestCase
     assert_response :success
   end
 
+  test '#items returns all relevant merchant item records' do
+    merchant = create(:merchant)
+    items = create_list(:item, 45, merchant: merchant)
+    get :items, format: :json, id: merchant.id
+    assert_equal merchant.id, json_response.first["merchant_id"]
+    assert_equal 45, json_response.count
+  end
+
   test '#invoices responds to json' do
     merchant = create(:merchant)
     get :invoices, format: :json, id: merchant.id
     assert_response :success
+  end
+
+  test '#invoices returns all relevant merchant invoice records' do
+    merchant = create(:merchant)
+    invoices = create_list(:invoice, 12, merchant: merchant)
+    get :invoices, format: :json, id: merchant.id
+    assert_equal merchant.id, json_response.first["merchant_id"]
+    assert_equal 12, json_response.count
   end
 
 # FactoryGirl.create(:merchant, name: "Edgar's Store")
