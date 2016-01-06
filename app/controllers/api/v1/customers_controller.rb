@@ -45,9 +45,3 @@ class Api::V1::CustomersController < ApplicationController
     respond_with Merchant.find(top_merchant)
   end
 end
-
-# invoices.successful. #grouping by merchant_id
-# Merchant.find_by_sql("Select * from invoices WHERE customers.id = customer")
-
-# Customer.find_by(id: params[:id]).transactions
-# respond_with Merchant.joins(:invoices).where(invoices: { customer: customer, status: "shipped" }).group(:id).group("invoice_count desc")

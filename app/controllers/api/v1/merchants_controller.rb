@@ -37,8 +37,27 @@ class Api::V1::MerchantsController < ApplicationController
     respond_with Merchant.find_by(id: params[:id]).invoices
   end
 
+  ########## BI LOGIC
+
   def most_revenue
     Merchant.all
     # respond_with Merchant.joins(invoices: :invoice_items).group("merchants.id").sum("invoice_items.quantity * invoice_items.unit_price")
   end
+
+  ######### SINGLE MERCHANT
+
+  def revenue
+    invoice_ids = Merchant.find(params[:id]).invoices.pluck(:id)
+    paid_invoice_ids = Transaction.where(invoice_id: invoice_ids).where(result: "success").pluck(:invoice_id)
+    revenue = InvoiceItem.where(invoice_id: paid_invoice_ids).sum("unit_price * quantity")
+    respond_with({"revenue" => revenue })
+  end
 end
+
+# respond_with Invoice.where(merchant_id: params[:id]).joins(:invoice_items).sum("invoice_items.quantity * invoice_items.unit_price")
+
+# invoices.successful. #grouping by merchant_id
+# Merchant.find_by_sql("Select * from invoices WHERE customers.id = customer")
+
+# Customer.find_by(id: params[:id]).transactions
+# respond_with Merchant.joins(:invoices).where(invoices: { customer: customer, status: "shipped" }).group(:id).group("invoice_count desc")

@@ -98,8 +98,28 @@ class Api::V1::MerchantsControllerTest < ActionController::TestCase
     assert_equal 12, json_response.count
   end
 
-# FactoryGirl.create(:merchant, name: "Edgar's Store")
- #### NEED TO FIX WITH FACTORY ABOVE
+######## BI LOGIC
+
+  test '#revenue responds to json' do
+    merchant = create(:merchant)
+    invoice = create(:invoice, merchant: merchant)
+    invoice_2 = create(:invoice, merchant: merchant)
+    create(:transaction, invoice: invoice)
+    create(:transaction, invoice: invoice_2)
+    get :revenue, format: :json, id: merchant.id
+    assert_response :success
+  end
+
+  test '#revenue returns the total revenue for a merchant transactions' do
+    merchant = create(:merchant)
+    invoice = create(:invoice, merchant: merchant)
+    invoice_2 = create(:invoice, merchant: merchant)
+    create(:transaction, invoice: invoice)
+    create(:transaction, invoice: invoice_2)
+    get :revenue, format: :json, id: merchant.id
+
+    assert_equal 175, json_response
+  end
 
   test '#most_revenue responds to json' do
     skip
