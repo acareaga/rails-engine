@@ -73,4 +73,10 @@ class Api::V1::TransactionsControllerTest < ActionController::TestCase
     get :random, format: :json
     assert_response :success
   end
+
+  test '#invoice responds to json' do
+    transaction = create(:transaction)
+    get :invoice, format: :json, id: transaction.id
+    assert_response :success
+  end
 end

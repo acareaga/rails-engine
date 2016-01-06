@@ -86,7 +86,7 @@ class Api::V1::CustomersControllerTest < ActionController::TestCase
     skip
     customer = create(:customer)
     get :invoices, format: :json, id: customer.id
-    assert_equal 2, json_response.count
+    assert_equal 1, json_response.count
   end
 
   ############## TRANSACTIONS

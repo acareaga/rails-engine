@@ -73,4 +73,34 @@ class Api::V1::InvoicesControllerTest < ActionController::TestCase
     get :random, format: :json
     assert_response :success
   end
+
+  test '#transactions responds to json' do
+    invoice = create(:invoice)
+    get :transactions, format: :json, id: invoice.id
+    assert_response :success
+  end
+
+  test '#invoice_items responds to json' do
+    invoice = create(:invoice)
+    get :invoice_items, format: :json, id: invoice.id
+    assert_response :success
+  end
+
+  test '#items responds to json' do
+    invoice = create(:invoice)
+    get :items, format: :json, id: invoice.id
+    assert_response :success
+  end
+
+  test '#customer responds to json' do
+    invoice = create(:invoice)
+    get :customer, format: :json, id: invoice.id
+    assert_response :success
+  end
+
+  test '#merchant responds to json' do
+    invoice = create(:invoice)
+    get :merchant, format: :json, id: invoice.id
+    assert_response :success
+  end
 end

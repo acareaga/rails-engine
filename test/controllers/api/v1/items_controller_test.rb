@@ -73,4 +73,16 @@ class Api::V1::ItemsControllerTest < ActionController::TestCase
     get :random, format: :json
     assert_response :success
   end
+
+  test '#invoice_items responds to json' do
+    item = create(:item)
+    get :invoice_items, format: :json, id: item.id
+    assert_response :success
+  end
+
+  test '#merchant responds to json' do
+    item = create(:item)
+    get :merchant, format: :json, id: item.id
+    assert_response :success
+  end
 end

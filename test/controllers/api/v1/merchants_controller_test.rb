@@ -74,6 +74,18 @@ class Api::V1::MerchantsControllerTest < ActionController::TestCase
     assert_response :success
   end
 
+  test '#items responds to json' do
+    merchant = create(:merchant)
+    get :items, format: :json, id: merchant.id
+    assert_response :success
+  end
+
+  test '#invoices responds to json' do
+    merchant = create(:merchant)
+    get :invoices, format: :json, id: merchant.id
+    assert_response :success
+  end
+
 # FactoryGirl.create(:merchant, name: "Edgar's Store")
  #### NEED TO FIX WITH FACTORY ABOVE
 
