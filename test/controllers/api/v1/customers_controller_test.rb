@@ -8,12 +8,6 @@ class Api::V1::CustomersControllerTest < ActionController::TestCase
     assert_response :success
   end
 
-  test '#index returns all relevant customer records' do
-    create_list(:customer, 10)
-    get :index, format: :json
-    assert_equal 10, json_response.count
-  end
-
   test '#index returns the correct number of customers' do
     customers = create_list(:customer, 2)
     get :index, format: :json

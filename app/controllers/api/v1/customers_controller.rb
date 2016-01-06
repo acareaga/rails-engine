@@ -38,7 +38,7 @@ class Api::V1::CustomersController < ApplicationController
   end
 
   def favorite_merchant
-    binding.pry
-    respond_with Merchant.all.joins(:invoices).where(invoices: { customer: customer, status: "success" }).group(:id).group("invoice_count desc")
+    # invoices.successful. #grouping by merchant_id
+    respond_with Merchant.joins(:invoices).where(invoices: { customer: customer, status: "success" }).group(:id).group("invoice_count desc")
   end
 end

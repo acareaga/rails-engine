@@ -8,12 +8,6 @@ class Api::V1::MerchantsControllerTest < ActionController::TestCase
     assert_response :success
   end
 
-  test '#index returns an array of merchant records' do
-    create_list(:merchant, 50)
-    get :index, format: :json
-    assert_equal 50, json_response.count
-  end
-
   test '#index returns the correct number of merchants' do
     merchants = create_list(:merchant, 2)
     get :index, format: :json

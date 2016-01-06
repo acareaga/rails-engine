@@ -39,6 +39,6 @@ class Api::V1::MerchantsController < ApplicationController
 
   def most_revenue
     Merchant.all
-    # respond_with Merchant.all.joins(invoices: :invoice_items).group("merchants.id").sum("invoice_items.quantity * invoice_items.unit_price")
+    # respond_with Merchant.joins(invoices: :invoice_items).group("merchants.id").sum("invoice_items.quantity * invoice_items.unit_price")
   end
 end
