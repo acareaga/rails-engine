@@ -102,13 +102,11 @@ class Api::V1::CustomersControllerTest < ActionController::TestCase
     assert_equal 3, json_response.count
   end
 
-  ########### BI LOGIC
-
   test '#favorite_merchant responds to json' do
     customer = create(:customer)
     merchant = create(:merchant)
     invoice = create(:invoice, customer: customer, merchant: merchant)
-    transaction = create(:transaction, invoice: invoice)
+    create(:transaction, invoice: invoice)
     get :favorite_merchant, format: :json, id: customer.id
     assert_response :success
   end
@@ -120,15 +118,15 @@ class Api::V1::CustomersControllerTest < ActionController::TestCase
     invoice = create(:invoice, customer: customer, merchant: merchant)
     invoice_2 = create(:invoice, customer: customer, merchant: merchant)
     invoice_3 = create(:invoice, customer: customer, merchant: merchant)
-    transaction = create(:transaction, invoice: invoice)
-    transaction_2 = create(:transaction, invoice: invoice_2)
-    transaction_3 = create(:transaction, invoice: invoice_3)
+    create(:transaction, invoice: invoice)
+    create(:transaction, invoice: invoice_2)
+    create(:transaction, invoice: invoice_3)
 
     merchant_2 = create(:merchant, name: "Cole")
     invoice_4 = create(:invoice, customer: customer, merchant: merchant_2)
     invoice_5 = create(:invoice, customer: customer, merchant: merchant_2)
-    transaction = create(:transaction, invoice: invoice_4)
-    transaction_2 = create(:transaction, invoice: invoice_5)
+    create(:transaction, invoice: invoice_4)
+    create(:transaction, invoice: invoice_5)
 
     get :favorite_merchant, format: :json, id: customer.id
     assert_equal merchant.id, json_response["id"]
