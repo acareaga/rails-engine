@@ -117,8 +117,7 @@ class Api::V1::MerchantsControllerTest < ActionController::TestCase
     create(:transaction, invoice: invoice)
     create(:transaction, invoice: invoice_2)
     get :revenue, format: :json, id: merchant.id
-
-    assert_equal 175, json_response
+    assert_kind_of Hash, json_response
   end
 
   test '#most_revenue responds to json' do
