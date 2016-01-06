@@ -1,5 +1,5 @@
 class Api::V1::CustomersController < ApplicationController
-  respond_to :json, :xml
+  respond_to :json
 
   def index
     respond_with Customer.all
@@ -39,6 +39,9 @@ class Api::V1::CustomersController < ApplicationController
 
   def favorite_merchant
     # invoices.successful. #grouping by merchant_id
+
+    # Merchant.find_by_sql("Select * from invoices WHERE customers.id = customer")
+
     respond_with Merchant.joins(:invoices).where(invoices: { customer: customer, status: "success" }).group(:id).group("invoice_count desc")
   end
 end
