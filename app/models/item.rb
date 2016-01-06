@@ -11,7 +11,7 @@ class Item < ActiveRecord::Base
 
   private
 
-  def format_currency
+  def self.format_currency
     self.unit_price = unit_price/100.00
   end
 end
