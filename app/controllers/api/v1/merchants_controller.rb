@@ -53,6 +53,13 @@ class Api::V1::MerchantsController < ApplicationController
     respond_with({"revenue" => revenue })
   end
 
+  def customers_with_pending_invoices
+    invoices = Merchant.find_by(id: params[:id]).invoices.pluck(:id)
+    paid_invoice_ids = Transaction.where(invoice_id: invoices).where(result: "failed").pluck(:invoice_id)
+    customer_ids = Invoice.find(paid_invoice_ids).map { |invoice| invoice.customer_id }
+    respond_with Customer.find(customer_ids)
+  end
+
   ########## START HERE
 
   def favorite_customer
