@@ -99,4 +99,46 @@ class Api::V1::ItemsControllerTest < ActionController::TestCase
     get :merchant, format: :json, id: item.id
     assert_equal item.merchant_id, json_response["id"]
   end
+
+  ##########################
+
+  test '#most_revenue responds to json and returns the correct data' do
+    item = create(:item)
+    item_2 = create(:item, name: "Cookies", unit_price: 50)
+    item_3 = create(:item, name: "iPhone", unit_price: 100)
+    invoice_item = create(:invoice_item, item: item, quantity: 10)
+    invoice_item_2 = create(:invoice_item, item: item_2, quantity: 40)
+    invoice_item_3 = create(:invoice_item, item: item_3, quantity: 500)
+
+    item_4 = create(:item)
+    item_5 = create(:item, name: "Laptop", unit_price: 500)
+    item_6 = create(:item, name: "Desk", unit_price: 40)
+    invoice_item_4 = create(:invoice_item, item: item_4, quantity: 1)
+    invoice_item_5 = create(:invoice_item, item: item_5, quantity: 1)
+    invoice_item_6 = create(:invoice_item, item: item_6, quantity: 1)
+
+    get :most_revenue, format: :json, quantity: 2
+    assert_equal 2, json_response.count
+    assert item_3.name, json_response.first["name"]
+  end
+
+  test '#most_items responds to json and returns the correct data' do
+    item = create(:item)
+    item_2 = create(:item, name: "Vodka", unit_price: 50)
+    item_3 = create(:item, name: "Whiskey", unit_price: 100)
+    invoice_item = create(:invoice_item, item: item, quantity: 10)
+    invoice_item_2 = create(:invoice_item, item: item_2, quantity: 40)
+    invoice_item_3 = create(:invoice_item, item: item_3, quantity: 500)
+
+    item_4 = create(:item)
+    item_5 = create(:item, name: "Gin", unit_price: 500)
+    item_6 = create(:item, name: "Rum", unit_price: 40)
+    invoice_item_4 = create(:invoice_item, item: item_4, quantity: 1)
+    invoice_item_5 = create(:invoice_item, item: item_5, quantity: 1)
+    invoice_item_6 = create(:invoice_item, item: item_6, quantity: 1)
+
+    get :most_items, format: :json, quantity: 2
+    assert_equal 2, json_response.count
+    assert item_3.name, json_response.first["name"]
+  end
 end
