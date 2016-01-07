@@ -157,7 +157,7 @@ class Api::V1::MerchantsControllerTest < ActionController::TestCase
     create(:transaction, invoice: invoice_5)
     create(:transaction, invoice: invoice_6)
 
-    get :most_revenue, format: :json, quantity: 2
+    get :most_items, format: :json, quantity: 2
     assert_equal 2, json_response.count
     assert_equal merchant.name, json_response.first["name"]
   end
@@ -190,5 +190,21 @@ class Api::V1::MerchantsControllerTest < ActionController::TestCase
 
     get :favorite_customer, format: :json, id: merchant.id
     assert_equal customer.id, json_response["id"]
+  end
+
+  test '#customers_with_pending_invoices responds to json' do
+    merchant = create(:merchant)
+
+    customer = create(:customer)
+    invoice = create(:invoice, customer: customer, merchant: merchant, status: "pending")
+    invoice_2 = create(:invoice, customer: customer, merchant: merchant, status: "pending")
+    invoice_3 = create(:invoice, customer: customer, merchant: merchant, status: "pending")
+
+    customer_2 = create(:customer, first_name: "Cole")
+    invoice_4 = create(:invoice, customer: customer_2, merchant: merchant, status: "pending")
+    invoice_5 = create(:invoice, customer: customer_2, merchant: merchant, status: "pending")
+
+    get :customers_with_pending_invoices, format: :json, id: merchant.id
+    assert_response :success
   end
 end
