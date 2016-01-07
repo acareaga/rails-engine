@@ -37,8 +37,6 @@ class Api::V1::ItemsController < ApplicationController
     respond_with Item.find_by(id: params[:id]).merchant
   end
 
-  ########## BI LOGIC
-
   def most_revenue
     respond_with Item.most_revenue(params[:quantity])
   end

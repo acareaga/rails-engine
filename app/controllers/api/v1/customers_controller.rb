@@ -38,10 +38,6 @@ class Api::V1::CustomersController < ApplicationController
   end
 
   def favorite_merchant
-    invoice_ids = Customer.find(params[:id]).transactions.where(result: "success").pluck(:invoice_id)
-    merchant_ids = Invoice.find(invoice_ids).map { |invoice| invoice.merchant_id }
-    sales = merchant_ids.inject(Hash.new(0)) { |h,v| h[v] += 1; h }
-    top_merchant = merchant_ids.max_by { |v| sales[v] }
-    respond_with Merchant.find(top_merchant)
+    respond_with Customer.favorite_merchant(params[:id])
   end
 end

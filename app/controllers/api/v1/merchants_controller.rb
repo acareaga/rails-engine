@@ -47,8 +47,6 @@ class Api::V1::MerchantsController < ApplicationController
     respond_with Merchant.most_items(params[:quantity])
   end
 
-  ######### SINGLE MERCHANT
-
   def revenue
     invoice_ids = Merchant.find(params[:id]).invoices.pluck(:id)
     paid_invoice_ids = Transaction.where(invoice_id: invoice_ids).where(result: "success").pluck(:invoice_id)
