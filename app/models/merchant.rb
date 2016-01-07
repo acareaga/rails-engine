@@ -24,25 +24,25 @@ class Merchant < ActiveRecord::Base
   end
 
   def self.revenue(id)
-    invoice_ids = Merchant.find(id).invoices.pluck(:id)
+    invoice_ids      = Merchant.find(id).invoices.pluck(:id)
     paid_invoice_ids = Transaction.where(invoice_id: invoice_ids).where(result: "success").pluck(:invoice_id)
-    revenue = InvoiceItem.where(invoice_id: paid_invoice_ids).sum("unit_price * quantity")
+    revenue          = InvoiceItem.where(invoice_id: paid_invoice_ids).sum("unit_price * quantity")
     {"revenue" => revenue }
   end
 
   def self.customers_with_pending_invoices(id)
-    invoices = Merchant.find_by(id: id).invoices.pluck(:id)
+    invoices         = Merchant.find_by(id: id).invoices.pluck(:id)
     paid_invoice_ids = Transaction.where(invoice_id: invoices).where(result: "failed").pluck(:invoice_id)
-    customer_ids = Invoice.find(paid_invoice_ids).map { |invoice| invoice.customer_id }
+    customer_ids     = Invoice.find(paid_invoice_ids).map { |invoice| invoice.customer_id }
     Customer.find(customer_ids)
   end
 
   def self.favorite_customer(id)
-    invoice_ids = Merchant.find(id).invoices.pluck(:id)
+    invoice_ids      = Merchant.find(id).invoices.pluck(:id)
     paid_invoice_ids = Transaction.where(invoice_id: invoice_ids).where(result: "success").pluck(:invoice_id)
-    customer_ids = Invoice.find(paid_invoice_ids).map { |invoice| invoice.customer_id }
-    sales = customer_ids.inject(Hash.new(0)) { |customer, count| customer[count] += 1; customer }
-    top_customer = customer_ids.max_by { |customer| sales[customer] }
+    customer_ids     = Invoice.find(paid_invoice_ids).map { |invoice| invoice.customer_id }
+    sales            = customer_ids.inject(Hash.new(0)) { |customer, count| customer[count] += 1; customer }
+    top_customer     = customer_ids.max_by { |customer| sales[customer] }
     Customer.find(top_customer)
   end
 end
