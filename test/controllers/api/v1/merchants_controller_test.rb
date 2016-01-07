@@ -192,19 +192,25 @@ class Api::V1::MerchantsControllerTest < ActionController::TestCase
     assert_equal customer.id, json_response["id"]
   end
 
-  test '#customers_with_pending_invoices responds to json' do
+  test '#customers_with_pending_invoices responds to json and returns the correct customers' do
     merchant = create(:merchant)
 
     customer = create(:customer)
-    invoice = create(:invoice, customer: customer, merchant: merchant, status: "pending")
-    invoice_2 = create(:invoice, customer: customer, merchant: merchant, status: "pending")
-    invoice_3 = create(:invoice, customer: customer, merchant: merchant, status: "pending")
+    invoice = create(:invoice, customer: customer, merchant: merchant)
+    invoice_2 = create(:invoice, customer: customer, merchant: merchant)
+    invoice_3 = create(:invoice, customer: customer, merchant: merchant)
+    create(:transaction, invoice: invoice, result: "failed")
+    create(:transaction, invoice: invoice_2, result: "failed")
+    create(:transaction, invoice: invoice_3, result: "failed")
 
     customer_2 = create(:customer, first_name: "Cole")
-    invoice_4 = create(:invoice, customer: customer_2, merchant: merchant, status: "pending")
-    invoice_5 = create(:invoice, customer: customer_2, merchant: merchant, status: "pending")
+    invoice_4 = create(:invoice, customer: customer_2, merchant: merchant)
+    invoice_5 = create(:invoice, customer: customer_2, merchant: merchant)
+    create(:transaction, invoice: invoice_4, result: "failed")
+    create(:transaction, invoice: invoice_5, result: "failed")
 
     get :customers_with_pending_invoices, format: :json, id: merchant.id
+    assert_equal customer.id, json_response.last["id"]
     assert_response :success
   end
 end
