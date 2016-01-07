@@ -120,6 +120,10 @@ class Api::V1::MerchantsControllerTest < ActionController::TestCase
     assert_kind_of Hash, json_response
   end
 
+ ##############
+
+ # Add most_items, customers_with_pending_invoices, favorite_customer
+
   test '#most_revenue responds to json' do
     skip
     merchant = create(:merchant)

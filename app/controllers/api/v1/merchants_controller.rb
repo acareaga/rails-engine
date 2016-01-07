@@ -40,8 +40,11 @@ class Api::V1::MerchantsController < ApplicationController
   ########## BI LOGIC
 
   def most_revenue
-    Merchant.all
-    # respond_with Merchant.joins(invoices: :invoice_items).group("merchants.id").sum("invoice_items.quantity * invoice_items.unit_price")
+    respond_with Merchant.most_revenue(params[:quantity])
+  end
+
+  def most_items
+    respond_with Merchant.most_items(params[:quantity])
   end
 
   ######### SINGLE MERCHANT
@@ -60,8 +63,6 @@ class Api::V1::MerchantsController < ApplicationController
     respond_with Customer.find(customer_ids)
   end
 
-  ########## START HERE
-
   def favorite_customer
     invoice_ids = Merchant.find(params[:id]).invoices.pluck(:id)
     paid_invoice_ids = Transaction.where(invoice_id: invoice_ids).where(result: "success").pluck(:invoice_id)
@@ -71,11 +72,3 @@ class Api::V1::MerchantsController < ApplicationController
     respond_with Customer.find(top_customer)
   end
 end
-
-# respond_with Invoice.where(merchant_id: params[:id]).joins(:invoice_items).sum("invoice_items.quantity * invoice_items.unit_price")
-
-# invoices.successful. #grouping by merchant_id
-# Merchant.find_by_sql("Select * from invoices WHERE customers.id = customer")
-
-# Customer.find_by(id: params[:id]).transactions
-# respond_with Merchant.joins(:invoices).where(invoices: { customer: customer, status: "shipped" }).group(:id).group("invoice_count desc")
