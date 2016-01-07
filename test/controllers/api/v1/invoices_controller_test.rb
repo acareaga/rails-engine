@@ -62,7 +62,7 @@ class Api::V1::InvoicesControllerTest < ActionController::TestCase
     assert_response :success
   end
 
-  test '#find_all returns all matching records' do
+  test '#find_all returns all matching invoice records' do
     invoice = create(:invoice)
     get :find_all, format: :json, id: invoice.id
     assert_equal 1, json_response.count
@@ -80,7 +80,7 @@ class Api::V1::InvoicesControllerTest < ActionController::TestCase
     assert_response :success
   end
 
-  test '#transactions returns the correct for an invoice' do
+  test '#transactions returns the correct data based on an invoice' do
     invoice = create(:invoice)
     create(:transaction, invoice: invoice)
     get :transactions, format: :json, id: invoice.id
@@ -121,7 +121,7 @@ class Api::V1::InvoicesControllerTest < ActionController::TestCase
     assert_response :success
   end
 
-  test '#customer returns the correct record based on invoice' do
+  test '#customer returns the correct record based on an invoice' do
     customer = create(:customer)
     invoice = create(:invoice, customer: customer)
     get :customer, format: :json, id: invoice.id
@@ -134,7 +134,7 @@ class Api::V1::InvoicesControllerTest < ActionController::TestCase
     assert_response :success
   end
 
-  test '#merchant returns the correct record based on invoice' do
+  test '#merchant returns the correct record based on an invoice' do
     merchant = create(:merchant)
     invoice = create(:invoice, merchant: merchant)
     get :merchant, format: :json, id: invoice.id

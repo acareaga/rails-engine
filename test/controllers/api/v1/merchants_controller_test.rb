@@ -108,7 +108,7 @@ class Api::V1::MerchantsControllerTest < ActionController::TestCase
     assert_response :success
   end
 
-  test '#revenue returns the total revenue for a merchant transactions' do
+  test '#revenue returns the total revenue for a merchant based on transactions' do
     merchant = create(:merchant)
     invoice = create(:invoice, merchant: merchant)
     invoice_2 = create(:invoice, merchant: merchant)
@@ -118,7 +118,7 @@ class Api::V1::MerchantsControllerTest < ActionController::TestCase
     assert_kind_of Hash, json_response
   end
 
-  test '#most_revenue responds to json and returns the correct data' do
+  test '#most_revenue responds to json and returns the correct merchant data' do
     merchant = create(:merchant)
     invoice = create(:invoice, merchant: merchant)
     invoice_2 = create(:invoice, merchant: merchant)
@@ -140,7 +140,7 @@ class Api::V1::MerchantsControllerTest < ActionController::TestCase
     assert_equal merchant.name, json_response.first["name"]
   end
 
-  test '#most_items responds to json and returns the correct data' do
+  test '#most_items responds to json and returns the correct merchant data' do
     merchant = create(:merchant)
     invoice = create(:invoice, merchant: merchant)
     invoice_2 = create(:invoice, merchant: merchant)

@@ -15,19 +15,19 @@ class Merchant < ActiveRecord::Base
     order("RANDOM()").first
   end
 
-  def self.revenue(id)
-    invoice_ids = Merchant.find(id).invoices.pluck(:id)
-    paid_invoice_ids = Transaction.where(invoice_id: invoice_ids).where(result: "success").pluck(:invoice_id)
-    revenue = InvoiceItem.where(invoice_id: paid_invoice_ids).sum("unit_price * quantity")
-    {"revenue" => revenue }
-  end
-
   def self.most_items(quantity)
     all.sort_by(&:calc_items).reverse[0...quantity.to_i]
   end
 
   def self.most_revenue(quantity)
     all.sort_by(&:calc_revenue).reverse[0...quantity.to_i]
+  end
+
+  def self.revenue(id)
+    invoice_ids = Merchant.find(id).invoices.pluck(:id)
+    paid_invoice_ids = Transaction.where(invoice_id: invoice_ids).where(result: "success").pluck(:invoice_id)
+    revenue = InvoiceItem.where(invoice_id: paid_invoice_ids).sum("unit_price * quantity")
+    {"revenue" => revenue }
   end
 
   def self.customers_with_pending_invoices(id)

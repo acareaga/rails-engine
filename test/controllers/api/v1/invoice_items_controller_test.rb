@@ -70,7 +70,7 @@ class Api::V1::InvoiceItemsControllerTest < ActionController::TestCase
     assert_response :success
   end
 
-  test '#invoice returns the relevant record based on the item' do
+  test '#invoice returns the relevant record based on the invoice item' do
     invoice_item = create(:invoice_item)
     get :invoice, format: :json, id: invoice_item.id
     assert_equal invoice_item.invoice_id, json_response["id"]

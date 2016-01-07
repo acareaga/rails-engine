@@ -76,7 +76,7 @@ class Api::V1::CustomersControllerTest < ActionController::TestCase
     assert_response :success
   end
 
-  test '#invoices returns specific customer records' do
+  test '#invoices returns a specific customer records' do
     customer = create(:customer)
     create(:invoice, customer: customer)
     create(:invoice, customer: customer)

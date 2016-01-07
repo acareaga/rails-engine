@@ -62,7 +62,7 @@ class Api::V1::ItemsControllerTest < ActionController::TestCase
     assert_response :success
   end
 
-  test '#find_all returns all matching records' do
+  test '#find_all returns all matching item records' do
     item = create(:item)
     get :find_all, format: :json, id: item.id
     assert_equal 1, json_response.count
@@ -93,16 +93,14 @@ class Api::V1::ItemsControllerTest < ActionController::TestCase
     assert_response :success
   end
 
-  test '#merchant returns the correct record basedon on an item' do
+  test '#merchant returns the correct record based on on an item' do
     merchant = create(:merchant)
     item = create(:item, merchant: merchant)
     get :merchant, format: :json, id: item.id
     assert_equal item.merchant_id, json_response["id"]
   end
 
-  ##########################
-
-  test '#most_revenue responds to json and returns the correct data' do
+  test '#most_revenue responds to json and returns the correct item data' do
     item = create(:item)
     item_2 = create(:item, name: "Cookies", unit_price: 50)
     item_3 = create(:item, name: "iPhone", unit_price: 100)
@@ -122,7 +120,7 @@ class Api::V1::ItemsControllerTest < ActionController::TestCase
     assert item_3.name, json_response.first["name"]
   end
 
-  test '#most_items responds to json and returns the correct data' do
+  test '#most_items responds to json and returns the correct item data' do
     item = create(:item)
     item_2 = create(:item, name: "Vodka", unit_price: 50)
     item_3 = create(:item, name: "Whiskey", unit_price: 100)
