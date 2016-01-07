@@ -40,4 +40,10 @@ class Api::V1::CustomersController < ApplicationController
   def favorite_merchant
     respond_with Customer.favorite_merchant(params[:id])
   end
+
+  # private
+  #
+  # def
+  #
+  # end
 end

@@ -10,19 +10,11 @@ class Api::V1::MerchantsController < ApplicationController
   end
 
   def find
-    if params["name"]
-      respond_with Merchant.where("#{params.first.first} ILIKE ?", params.first.last).first
-    else
-      respond_with Merchant.find_by(params.first.first => params.first.last)
-    end
+    respond_with Merchant.find_by(merchant_params)
   end
 
   def find_all
-    if params["name"]
-      respond_with Merchant.where("#{params.first.first} ILIKE ?", params.first.last)
-    else
-      respond_with Merchant.where("#{params.first.first}": params.first.last)
-    end
+    respond_with Merchant.where(merchant_params)
   end
 
   def random
@@ -55,5 +47,11 @@ class Api::V1::MerchantsController < ApplicationController
 
   def favorite_customer
     respond_with Merchant.favorite_customer(params[:id])
+  end
+
+  private
+
+  def merchant_params
+    params.permit(:name, :id, :created_at, :updated_at)
   end
 end
