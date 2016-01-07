@@ -6,7 +6,7 @@ class Api::V1::MerchantsController < ApplicationController
   end
 
   def show
-    respond_with Merchant.find_by(id: params[:id])
+    respond_with Merchant.find_by(merchant_params)
   end
 
   def find
@@ -22,11 +22,11 @@ class Api::V1::MerchantsController < ApplicationController
   end
 
   def items
-    respond_with Merchant.find_by(id: params[:id]).items
+    respond_with Merchant.find_by(merchant_params).items
   end
 
   def invoices
-    respond_with Merchant.find_by(id: params[:id]).invoices
+    respond_with Merchant.find_by(merchant_params).invoices
   end
 
   def most_revenue
