@@ -41,8 +41,8 @@ class Merchant < ActiveRecord::Base
     invoice_ids = Merchant.find(id).invoices.pluck(:id)
     paid_invoice_ids = Transaction.where(invoice_id: invoice_ids).where(result: "success").pluck(:invoice_id)
     customer_ids = Invoice.find(paid_invoice_ids).map { |invoice| invoice.customer_id }
-    sales = customer_ids.inject(Hash.new(0)) { |h,v| h[v] += 1; h }
-    top_customer = customer_ids.max_by { |v| sales[v] }
+    sales = customer_ids.inject(Hash.new(0)) { |customer, count| customer[count] += 1; customer }
+    top_customer = customer_ids.max_by { |customer| sales[customer] }
     Customer.find(top_customer)
   end
 end
