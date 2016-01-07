@@ -4,7 +4,9 @@
 
 [![Throughput Graph](https://graphs.waffle.io/acareaga/rails-engine/throughput.svg)](https://waffle.io/acareaga/rails-engine/metrics)
 
-API Curious is the first individual project in Module 3 at the Turing School. Adventure Journal is photo journal site built using the Instagram API.
+Rails Engine is the second individual project in Module 3 at Turing. It's a Rails application that uses ActiveRecord to build a JSON API which exposes the SalesEngine data schema.
+
+Adventure Journal is photo journal site built using the Instagram API.
 
 [Project Outline](https://github.com/turingschool/lesson_plans/blob/master/ruby_03-professional_rails_applications/rails_engine.md) | [Spec Harness](https://github.com/turingschool/rales_engine_spec_harness)
 
