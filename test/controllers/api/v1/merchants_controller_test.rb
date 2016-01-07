@@ -98,8 +98,6 @@ class Api::V1::MerchantsControllerTest < ActionController::TestCase
     assert_equal 12, json_response.count
   end
 
-######## BI LOGIC
-
   test '#revenue responds to json' do
     merchant = create(:merchant)
     invoice = create(:invoice, merchant: merchant)
@@ -120,35 +118,77 @@ class Api::V1::MerchantsControllerTest < ActionController::TestCase
     assert_kind_of Hash, json_response
   end
 
- ##############
-
- # Add most_items, customers_with_pending_invoices, favorite_customer
-
-  test '#most_revenue responds to json' do
-    skip
+  test '#most_revenue responds to json and returns the correct data' do
     merchant = create(:merchant)
-    item     = create(:item, merchant: merchant)
-    item2    = create(:item, merchant: merchant)
-    invoice  = create(:invoice, merchant: merchant)
-    create(:invoice_item, item: item, invoice: invoice, unit_price: 100, quantity: 1)
-    create(:invoice_item, item: item2, invoice: invoice, unit_price: 100, quantity: 1)
+    invoice = create(:invoice, merchant: merchant)
+    invoice_2 = create(:invoice, merchant: merchant)
+    invoice_3 = create(:invoice, merchant: merchant)
+    create(:transaction, invoice: invoice)
+    create(:transaction, invoice: invoice_2)
+    create(:transaction, invoice: invoice_3)
 
-    merchant_adam = create(:merchant, name: "Adam's Store")
-    item     = create(:item, merchant: merchant)
-    item2    = create(:item, merchant: merchant)
-    invoice  = create(:invoice, merchant: merchant)
-    create(:invoice_item, item: item, invoice: invoice, unit_price: 200, quantity: 1)
-    create(:invoice_item, item: item2, invoice: invoice, unit_price: 600, quantity: 2)
-
-    merchant_elliot = create(:merchant, name: "Elliot's Store")
-    item     = create(:item, merchant: merchant)
-    item2    = create(:item, merchant: merchant)
-    invoice  = create(:invoice, merchant: merchant)
-    create(:invoice_item, item: item, invoice: invoice, unit_price: 200, quantity: 1)
-    create(:invoice_item, item: item2, invoice: invoice, unit_price: 800, quantity: 1)
+    merchant_2 = create(:merchant, name: "Matt's Cookies")
+    invoice_4 = create(:invoice, merchant: merchant_2)
+    invoice_5 = create(:invoice, merchant: merchant_2)
+    invoice_6 = create(:invoice, merchant: merchant_2)
+    create(:transaction, invoice: invoice_4)
+    create(:transaction, invoice: invoice_5)
+    create(:transaction, invoice: invoice_6)
 
     get :most_revenue, format: :json, quantity: 2
     assert_equal 2, json_response.count
-    assert_equal [merchant_adam.id, merchant_elliot.id], json_response.map { |response| response["id"] }
+    assert_equal merchant.name, json_response.first["name"]
+  end
+
+  test '#most_items responds to json and returns the correct data' do
+    merchant = create(:merchant)
+    invoice = create(:invoice, merchant: merchant)
+    invoice_2 = create(:invoice, merchant: merchant)
+    invoice_3 = create(:invoice, merchant: merchant)
+    create(:transaction, invoice: invoice)
+    create(:transaction, invoice: invoice_2)
+    create(:transaction, invoice: invoice_3)
+
+    merchant_2 = create(:merchant, name: "Matt's Cookies")
+    invoice_4 = create(:invoice, merchant: merchant_2)
+    invoice_5 = create(:invoice, merchant: merchant_2)
+    invoice_6 = create(:invoice, merchant: merchant_2)
+    create(:transaction, invoice: invoice_4)
+    create(:transaction, invoice: invoice_5)
+    create(:transaction, invoice: invoice_6)
+
+    get :most_revenue, format: :json, quantity: 2
+    assert_equal 2, json_response.count
+    assert_equal merchant.name, json_response.first["name"]
+  end
+
+  test '#favorite_customer responds to json' do
+    customer = create(:customer)
+    merchant = create(:merchant)
+    invoice = create(:invoice, customer: customer, merchant: merchant)
+    create(:transaction, invoice: invoice)
+    get :favorite_customer, format: :json, id: merchant.id
+    assert_response :success
+  end
+
+  test '#favorite_customer returns the top merchant based on a customer data' do
+    customer = create(:customer)
+
+    merchant = create(:merchant)
+    invoice = create(:invoice, customer: customer, merchant: merchant)
+    invoice_2 = create(:invoice, customer: customer, merchant: merchant)
+    invoice_3 = create(:invoice, customer: customer, merchant: merchant)
+    create(:transaction, invoice: invoice)
+    create(:transaction, invoice: invoice_2)
+    create(:transaction, invoice: invoice_3)
+
+    merchant_2 = create(:merchant, name: "Cole")
+    invoice_4 = create(:invoice, customer: customer, merchant: merchant_2)
+    invoice_5 = create(:invoice, customer: customer, merchant: merchant_2)
+    create(:transaction, invoice: invoice_4)
+    create(:transaction, invoice: invoice_5)
+
+    get :favorite_customer, format: :json, id: merchant.id
+    assert_equal customer.id, json_response["id"]
   end
 end
