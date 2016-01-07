@@ -6,23 +6,15 @@ class Api::V1::ItemsController < ApplicationController
   end
 
   def show
-    respond_with Item.find_by(id: params[:id])
+    respond_with Item.find_by(item_params)
   end
 
   def find
-    if params["name"] || params["description"]
-      respond_with Item.where("#{params.first.first} ILIKE ?", params.first.last).first
-    else
-      respond_with Item.find_by(params.first.first => params.first.last)
-    end
+    respond_with Item.find_by(item_params)
   end
 
   def find_all
-    if params["name"] || params["description"]
-      respond_with Item.where("#{params.first.first} ILIKE ?", params.first.last)
-    else
-      respond_with Item.where("#{params.first.first}": params.first.last)
-    end
+    respond_with Item.where(item_params)
   end
 
   def random
@@ -30,11 +22,11 @@ class Api::V1::ItemsController < ApplicationController
   end
 
   def invoice_items
-    respond_with Item.find_by(id: params[:id]).invoice_items
+    respond_with Item.find_by(item_params).invoice_items
   end
 
   def merchant
-    respond_with Item.find_by(id: params[:id]).merchant
+    respond_with Item.find_by(item_params).merchant
   end
 
   def most_revenue
@@ -43,5 +35,11 @@ class Api::V1::ItemsController < ApplicationController
 
   def most_items
     respond_with Item.most_items(params[:quantity])
+  end
+
+  private
+
+  def item_params
+    params.permit(:id, :name, :description, :unit_price, :merchant_id, :created_at, :updated_at)
   end
 end
